@@ -5,7 +5,7 @@
         </div>    
 
         <div class="film-detay">
-            <input type="text" @keyup="filmara()" v-model="filmsearch" placeholder="Film aramak için birşeyler yazın.">
+            <input type="text" @keyup.prevent="filmara()" v-model="filmsearch" placeholder="Film aramak için birşeyler yazın.">
             <!-- button type="submit" @click="filmara()">ara</button>-->
         </div>
         
