@@ -21,7 +21,7 @@ export default {
 }
 
 #app {
-  width: 1140px;
+  width: 90%;
   margin-left: auto;
   margin-right: auto;
 }
