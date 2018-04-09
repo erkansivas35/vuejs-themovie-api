@@ -1,6 +1,6 @@
-# themovie
+# vuejs-themovie-api
 
-> A Vue.js project
+> Movie list and search
 
 ## Build Setup
 
