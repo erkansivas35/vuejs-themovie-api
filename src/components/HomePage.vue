@@ -5,8 +5,8 @@
         </div>    
 
         <div class="film-detay">
-            <input @keyup="filmara()" type="text" v-model="filmsearch" placeholder="Film aramak için birşeyler yazın.">
-            <button type="submit" @click="filmara()">ara</button>
+            <input type="text" @keyup="filmara()" v-model="filmsearch" placeholder="Film aramak için birşeyler yazın.">
+            <!-- button type="submit" @click="filmara()">ara</button>-->
         </div>
         
         <h1 v-if="filmsearch">"{{ filmsearch }}" adlı filmi arıyorsunuz</h1>
@@ -61,7 +61,7 @@ export default {
       (this.popfilmler = response.data.results), this.loading.false;
     });
   },
-  computed: {
+  methods: {
     filmara() {
       this.$http
         .get(
@@ -69,9 +69,14 @@ export default {
             this.filmsearch +
             "&page=1&include_adult=false"
         )
-        .then(response => {
-          this.filmler = response.data.results;
-        });
+        .then(
+          response => {
+            this.filmler = response.data.results;
+          },
+          response => {
+              location.href = '/';
+          }
+        );
       this.popfilmler = [];
     }
   }
