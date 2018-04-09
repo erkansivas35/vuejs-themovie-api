@@ -1,6 +1,8 @@
 # vuejs-themovie-api
 Movie list and search
 
+View demo: [https://movie-search-movie.herokuapp.com](https://movie-search-movie.herokuapp.com "View Demo")
+
 ## Build Setup
 
 ``` bash
