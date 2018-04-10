@@ -1,15 +1,10 @@
 <template>
   <div class="homepage">
-        <div class="loading" v-if="loading">
-            <p>Yükleniyor...</p>
-        </div>    
-
         <div class="film-detay">
-            <input type="text" @keyup.prevent="filmara()" v-model="filmsearch" placeholder="Film aramak için birşeyler yazın.">
-            <!-- button type="submit" @click="filmara()">ara</button>-->
+            <input type="text" @keyup.prevent="filmara()" v-model="filmsearch" placeholder="Film aramak için birşeyler yazın.">            
         </div>
         
-        <h1 v-if="filmsearch">"{{ filmsearch }}" adlı filmi arıyorsunuz</h1>
+        <h1 v-if="filmsearch">"{{ filmsearch }}" adlı filmleri arıyorsunuz.</h1>
         <div class="div film-listesi">
             <div class="film" v-for="film in filmler" v-if="!film.poster_path == ''" :key="film.id">
                 <a :href="`https://www.themoviedb.org/movie/` + film.id" target="_blank">
@@ -18,14 +13,14 @@
                 <p>
                     <b>Film Adı:</b> {{ film.original_title }}</p>
                 <p>
-                    <b>Dili:</b> {{ film.original_language }}</p>
+                    <b>Film Dili:</b> {{ film.original_language | capitalize }}</p>
                 <p>
                     <b>Puan:</b> {{ film.vote_average }}</p>
             </div>
         </div>
 
 
-        <h1 v-if="!filmsearch">Popüler Filmler</h1>
+        <h1 v-if="!filmsearch && goster">Popüler Filmler</h1>
         <div class="div film-listesi">
             <div class="film" v-for="popfilm in popfilmler" v-if="!popfilm.poster_path == ''" :key="popfilm.id">
                 <a :href="`https://www.themoviedb.org/movie/` + popfilm.id" target="_blank">
@@ -34,10 +29,15 @@
                 <p>
                     <b>Film Adı:</b> {{ popfilm.original_title }}</p>
                 <p>
-                    <b>Dili:</b> {{ popfilm.original_language }}</p>
+                    <b>Film Dili:</b> {{ popfilm.original_language | capitalize }}</p>
                 <p>
                     <b>Puan:</b> {{ popfilm.vote_average }}</p>
             </div>
+        </div>
+
+        <div v-if="!filmsearch && !goster" class="hata-mesaji">
+            <h1 class="fix">HADİ BİŞEYLER ARA :)</h1>
+            <p>yada <a href="/" title="Anasayfaya Git">Ana sayfaya</a> giderek popüler filmleri inceleyebilirsin.</p>
         </div>
         
   </div>
@@ -50,15 +50,15 @@ export default {
   name: "HomePage",
   data() {
     return {
-      loading: false,
       filmler: [],
       popfilmler: [],
-      filmsearch: ""
+      filmsearch: "",
+      goster: true
     };
   },
   created() {
     this.$http.get(api).then(response => {
-      (this.popfilmler = response.data.results), this.loading.false;
+      this.popfilmler = response.data.results;
     });
   },
   methods: {
@@ -74,10 +74,17 @@ export default {
             this.filmler = response.data.results;
           },
           response => {
-              location.href = '/';
+            (this.filmler = []), (this.goster = false);
           }
         );
       this.popfilmler = [];
+    }
+  },
+  filters: {
+    capitalize: function(value) {
+      if (!value) return "";
+      value = value.toString();
+      return value.charAt(0).toUpperCase() + value.slice(1);
     }
   }
 };

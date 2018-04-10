@@ -23,7 +23,7 @@ export default {
 #app {
   width: 90%;
   margin-left: auto;
-  margin-right: auto;
+  margin-right: auto;  
 }
 
 #app h1 {
@@ -82,5 +82,29 @@ export default {
 button {
   padding: 10px 20px;
   margin-bottom: 10px;
+}
+
+.hata-mesaji {
+  width: 100%;
+  height: 100vh;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 16px;
+}
+
+h1.fix {
+  margin-bottom: 5px !important;
 }
 </style>
