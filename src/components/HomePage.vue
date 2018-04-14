@@ -3,24 +3,14 @@
         <div class="film-detay">
             <input type="text" @keyup.prevent="filmara()" v-model="filmsearch" placeholder="Film aramak için birşeyler yazın.">            
         </div>
-        
-        <h1 v-if="filmsearch">"{{ filmsearch }}" adlı filmleri arıyorsunuz.</h1>
-        <div class="div film-listesi">
-            <div class="film" v-for="film in filmler" v-if="!film.poster_path == ''" :key="film.id">
-                <a :href="`https://www.themoviedb.org/movie/` + film.id" target="_blank">
-                    <img :src="'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + film.poster_path" :alt="film.title">
-                </a>
-                <p>
-                    <b>Film Adı:</b> {{ film.original_title }}</p>
-                <p>
-                    <b>Film Dili:</b> {{ film.original_language | capitalize }}</p>
-                <p>
-                    <b>Puan:</b> {{ film.vote_average }}</p>
-            </div>
+
+       <div v-if="filmBulunamadi" class="hata-mesaji film-bulunamadi">
+            <h1 class="fix">FİLM BULUNAMADI :)</h1>  
+            <p>yada <a href="/" title="Anasayfaya Git">Ana sayfaya</a> giderek popüler filmleri inceleyebilirsin.</p>         
         </div>
 
-
         <h1 v-if="!filmsearch && goster">Popüler Filmler</h1>
+        <h1 v-if="filmsearch">"{{ filmsearch }}" adlı filmleri arıyorsunuz.</h1>
         <div class="div film-listesi">
             <div class="film" v-for="popfilm in popfilmler" v-if="!popfilm.poster_path == ''" :key="popfilm.id">
                 <a :href="`https://www.themoviedb.org/movie/` + popfilm.id" target="_blank">
@@ -53,7 +43,8 @@ export default {
       filmler: [],
       popfilmler: [],
       filmsearch: "",
-      goster: true
+      goster: true,
+      filmBulunamadi: false
     };
   },
   created() {
@@ -71,10 +62,16 @@ export default {
         )
         .then(
           response => {
-            this.filmler = response.data.results;
+            this.popfilmler = response.data.results;
+            if (response.data.total_results == 0) {
+              this.filmBulunamadi = true;
+            }
+            else {
+              this.filmBulunamadi = false;
+            }
           },
           response => {
-            (this.filmler = []), (this.goster = false);
+            (this.popfilmler = []), (this.goster = false);
           }
         );
       this.popfilmler = [];
