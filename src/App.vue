@@ -107,10 +107,4 @@ button {
 h1.fix {
   margin-bottom: 5px !important;
 }
-
-.film-bulunamadi {
-  position: relative;
-  top: -70px;
-  pointer-events: none;
-}
 </style>

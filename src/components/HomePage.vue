@@ -4,13 +4,8 @@
             <input type="text" @keyup.prevent="filmara()" v-model="filmsearch" placeholder="Film aramak için birşeyler yazın.">            
         </div>
 
-       <div v-if="filmBulunamadi" class="hata-mesaji film-bulunamadi">
-            <h1 class="fix">FİLM BULUNAMADI :)</h1>  
-            <p>yada <a href="/" title="Anasayfaya Git">Ana sayfaya</a> giderek popüler filmleri inceleyebilirsin.</p>         
-        </div>
-
         <h1 v-if="!filmsearch && goster">Popüler Filmler</h1>
-        <h1 v-if="filmsearch">"{{ filmsearch }}" adlı filmleri arıyorsunuz.</h1>
+        <h1 v-if="filmsearch && !hataGoster">"{{ filmsearch }}" adlı filmleri arıyorsunuz.</h1>
         <div class="div film-listesi">
             <div class="film" v-for="popfilm in popfilmler" v-if="!popfilm.poster_path == ''" :key="popfilm.id">
                 <a :href="`https://www.themoviedb.org/movie/` + popfilm.id" target="_blank">
@@ -25,15 +20,16 @@
             </div>
         </div>
 
-        <div v-if="!filmsearch && !goster" class="hata-mesaji">
-            <h1 class="fix">HADİ BİŞEYLER ARA :)</h1>
-            <p>yada <a href="/" title="Anasayfaya Git">Ana sayfaya</a> giderek popüler filmleri inceleyebilirsin.</p>
-        </div>
+        <ErrorMessage :hataGoster=hataGoster
+                      :hataMesaji=hataMesaji>          
+        </ErrorMessage>
         
   </div>
 </template>
 
 <script>
+import ErrorMessage from './ErrorMessage'
+
 let api =
   "https://api.themoviedb.org/3/movie/popular?api_key=0f17bafeb7d9fda0c1560d29b6259066";
 export default {
@@ -44,7 +40,9 @@ export default {
       popfilmler: [],
       filmsearch: "",
       goster: true,
-      filmBulunamadi: false
+      filmBulunamadi: false,
+      hataMesaji: '',
+      hataGoster: false
     };
   },
   created() {
@@ -64,14 +62,19 @@ export default {
           response => {
             this.popfilmler = response.data.results;
             if (response.data.total_results == 0) {
-              this.filmBulunamadi = true;
-            }
-            else {
+              this.filmBulunamadi = true,
+              this.hataMesaji = 'FİLM BULUNAMADI :)',
+              this.hataGoster = true;
+            } else {
               this.filmBulunamadi = false;
+              this.hataGoster = false;
             }
           },
           response => {
-            (this.popfilmler = []), (this.goster = false);
+            (this.popfilmler = []),
+            (this.goster = false),
+            (this.hataMesaji = 'HADİ BİŞEYLER ARA :)'),
+            (this.hataGoster = true);
           }
         );
       this.popfilmler = [];
@@ -83,7 +86,8 @@ export default {
       value = value.toString();
       return value.charAt(0).toUpperCase() + value.slice(1);
     }
-  }
+  },
+  components: {ErrorMessage}
 };
 </script>
 
