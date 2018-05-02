@@ -4,21 +4,11 @@
             <input type="text" @keyup.prevent="filmara()" v-model="filmsearch" placeholder="Film aramak için birşeyler yazın.">            
         </div>
 
-        <h1 v-if="!filmsearch && goster">Popüler Filmler</h1>
-        <h1 v-if="filmsearch && !hataGoster">"{{ filmsearch }}" adlı filmleri arıyorsunuz.</h1>
-        <div class="div film-listesi">
-            <div class="film" v-for="popfilm in popfilmler" v-if="!popfilm.poster_path == ''" :key="popfilm.id">
-                <a :href="`https://www.themoviedb.org/movie/` + popfilm.id" target="_blank">
-                    <img :src="'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + popfilm.poster_path" :alt="popfilm.title">
-                </a>
-                <p>
-                    <b>Film Adı:</b> {{ popfilm.original_title }}</p>
-                <p>
-                    <b>Film Dili:</b> {{ popfilm.original_language | capitalize }}</p>
-                <p>
-                    <b>Puan:</b> {{ popfilm.vote_average }}</p>
-            </div>
-        </div>
+        <Movies :popfilmler=popfilmler
+                :filmsearch=filmsearch
+                :goster=goster
+                :hataGoster=hataGoster>          
+        </Movies>
 
         <ErrorMessage :hataGoster=hataGoster
                       :hataMesaji=hataMesaji>          
@@ -29,6 +19,7 @@
 
 <script>
 import ErrorMessage from './ErrorMessage'
+import Movies from './Movies'
 
 let api =
   "https://api.themoviedb.org/3/movie/popular?api_key=0f17bafeb7d9fda0c1560d29b6259066";
@@ -36,7 +27,6 @@ export default {
   name: "HomePage",
   data() {
     return {
-      filmler: [],
       popfilmler: [],
       filmsearch: "",
       goster: true,
@@ -87,7 +77,7 @@ export default {
       return value.charAt(0).toUpperCase() + value.slice(1);
     }
   },
-  components: {ErrorMessage}
+  components: {ErrorMessage, Movies}
 };
 </script>
 
