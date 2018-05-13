@@ -43,11 +43,7 @@ export default {
   methods: {
     filmara() {
       this.$http
-        .get(
-          "https://api.themoviedb.org/3/search/movie?api_key=0f17bafeb7d9fda0c1560d29b6259066&language=en-US&query=" +
-            this.filmsearch +
-            "&page=1&include_adult=false"
-        )
+        .get(`https://api.themoviedb.org/3/search/movie?api_key=0f17bafeb7d9fda0c1560d29b6259066&language=en-US&query=${this.filmsearch}&page=1&include_adult=false`)
         .then(
           response => {
             this.popfilmler = response.data.results;
@@ -71,7 +67,7 @@ export default {
     }
   },
   filters: {
-    capitalize: function(value) {
+    capitalize (value) {
       if (!value) return "";
       value = value.toString();
       return value.charAt(0).toUpperCase() + value.slice(1);
