@@ -20,10 +20,16 @@ export default {
   padding: 0;
 }
 
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 14px;
+  color: rgb(20, 20, 20);
+}
+
 #app {
   width: 90%;
   margin-left: auto;
-  margin-right: auto;  
+  margin-right: auto;
 }
 
 #app h1 {
@@ -39,13 +45,6 @@ export default {
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
-}
-
-.div .film {
-  width: 25%;
-  padding-right: 15px;
-  text-align: center;
-  margin-bottom: 15px;
 }
 
 .div .film img {
